@@ -19,17 +19,8 @@
 #include "JointEditCmpt.h"
 #include "StagePanel.h"
 #include "SelectJointOP.h"
-#include "RevoluteJoint.h"
-#include "PrismaticJoint.h"
-#include "DistanceJoint.h"
-#include "PulleyJoint.h"
-#include "GearJoint.h"
-#include "WheelJoint.h"
-#include "WeldJoint.h"
-#include "FrictionJoint.h"
-#include "RopeJoint.h"
-#include "MotorJoint.h"
-#include "Body.h"
+
+#include <easymodeling.h>
 
 using namespace emodeling;
 
@@ -53,11 +44,11 @@ void JointEditCmpt::updateControlValue()
 			SelectJointOP* op = static_cast<SelectJointOP*>(m_editOP);
 			if (op->jointSelection.size() == 2)
 			{
-				std::vector<Joint*> joints;
-				op->jointSelection.traverse(d2d::FetchAllVisitor<Joint>(joints));
-				const Joint *j0 = joints[0], *j1 = joints[1];
-				if ((j0->type == Joint::e_revoluteJoint || j0->type == Joint::e_prismaticJoint) &&
-					(j1->type == Joint::e_revoluteJoint || j1->type == Joint::e_prismaticJoint))
+				std::vector<libmodeling::Joint*> joints;
+				op->jointSelection.traverse(d2d::FetchAllVisitor<libmodeling::Joint>(joints));
+				const libmodeling::Joint *j0 = joints[0], *j1 = joints[1];
+				if ((j0->type == libmodeling::Joint::e_revoluteJoint || j0->type == libmodeling::Joint::e_prismaticJoint) &&
+					(j1->type == libmodeling::Joint::e_revoluteJoint || j1->type == libmodeling::Joint::e_prismaticJoint))
 					m_btnOK->Enable(true);
 				else
 					m_btnOK->Enable(false);
@@ -118,26 +109,26 @@ void JointEditCmpt::onCreateJoint(wxCommandEvent& event)
 	d2d::SpriteSelection* selection = editPanel->getSpriteSelection();
 	selection->traverse(d2d::FetchAllVisitor<d2d::ISprite>(sprites));
 	assert(sprites.size() == 2);
-	Body *body0 = static_cast<Body*>(sprites[0]->getUserData()),
-		*body1 = static_cast<Body*>(sprites[1]->getUserData());
+	libmodeling::Body *body0 = static_cast<libmodeling::Body*>(sprites[0]->getUserData()),
+		*body1 = static_cast<libmodeling::Body*>(sprites[1]->getUserData());
 
-	Joint* joint = NULL;
+	libmodeling::Joint* joint = NULL;
 	wxString type = m_typeChoice->GetString(m_typeChoice->GetSelection());
 	if (type == wxT("Revolute"))
-		editPanel->insertJoint(new RevoluteJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::RevoluteJoint(body0, body1));
 	else if (type == wxT("Prismatic"))
-		editPanel->insertJoint(new PrismaticJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::PrismaticJoint(body0, body1));
 	else if (type == wxT("Distance"))
-		editPanel->insertJoint(new DistanceJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::DistanceJoint(body0, body1));
 	else if (type == wxT("Pulley"))
-		editPanel->insertJoint(new PulleyJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::PulleyJoint(body0, body1));
 	else if (type == wxT("Gear"))
 	{
 		SelectJointOP* op = static_cast<SelectJointOP*>(m_editOP);
 		assert(op->jointSelection.size() == 2);
-		std::vector<Joint*> joints;
-		op->jointSelection.traverse(d2d::FetchAllVisitor<Joint>(joints));
-		editPanel->insertJoint(new GearJoint(body0, body1, joints[0], joints[1]));
+		std::vector<libmodeling::Joint*> joints;
+		op->jointSelection.traverse(d2d::FetchAllVisitor<libmodeling::Joint>(joints));
+		editPanel->insertJoint(new libmodeling::GearJoint(body0, body1, joints[0], joints[1]));
 	}	
 	else if (type == wxT("Wheel"))
 	{
@@ -145,19 +136,19 @@ void JointEditCmpt::onCreateJoint(wxCommandEvent& event)
 		if (dlg.ShowModal() == wxID_OK)
 		{
 			if (dlg.getChoice() == 0)
-				editPanel->insertJoint(new WheelJoint(body1, body0));
+				editPanel->insertJoint(new libmodeling::WheelJoint(body1, body0));
 			else
-				editPanel->insertJoint(new WheelJoint(body0, body1));
+				editPanel->insertJoint(new libmodeling::WheelJoint(body0, body1));
 		}
 	}
 	else if (type == wxT("Weld"))
-		editPanel->insertJoint(new WeldJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::WeldJoint(body0, body1));
 	else if (type == wxT("Friction"))
-		editPanel->insertJoint(new FrictionJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::FrictionJoint(body0, body1));
 	else if (type == wxT("Rope"))
-		editPanel->insertJoint(new RopeJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::RopeJoint(body0, body1));
 	else if (type == wxT("Motor"))
-		editPanel->insertJoint(new MotorJoint(body0, body1));
+		editPanel->insertJoint(new libmodeling::MotorJoint(body0, body1));
 
 	m_editPanel->Refresh();
 }

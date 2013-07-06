@@ -21,10 +21,10 @@
 
 #include <drag2d.h>
 
+namespace libmodeling { class Body; }
+
 namespace emodeling
 {
-	class Body;
-
 	class SelectBodyOP : public d2d::SelectSpritesOP
 	{
 	public:
@@ -52,7 +52,7 @@ namespace emodeling
 		}; // DrawSelectedVisitor
 
 	private:
-		Body* m_mouseOn;
+		libmodeling::Body* m_mouseOn;
 
 	}; // SelectBodyOP
 }

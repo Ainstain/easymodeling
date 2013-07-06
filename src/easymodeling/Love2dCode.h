@@ -21,11 +21,14 @@
 
 #include <easybuilder.h>
 
-namespace emodeling
+namespace libmodeling
 {
 	class Body;
 	class Joint;
+}
 
+namespace emodeling
+{
 	class Love2dCode
 	{
 	public:
@@ -40,10 +43,10 @@ namespace emodeling
 		void resolveLoadImages();
 		void resolveLoadWorld();
 		void resolveLoadBodies();
-		void resolveLoadFixtures(Body* body);
+		void resolveLoadFixtures(libmodeling::Body* body);
 		void resolveLoadJoints();
-		void resolveLoadJoint(const std::vector<Joint*>& joints, size_t index,
-			const std::vector<Body*>& bodies);
+		void resolveLoadJoint(const std::vector<libmodeling::Joint*>& joints, 
+			size_t index, const std::vector<libmodeling::Body*>& bodies);
 
 		void resolveUpdate();
 

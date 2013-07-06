@@ -17,14 +17,15 @@
 */
 
 #include "BodyPropertySetting.h"
-#include "Body.h"
+
+#include <easymodeling.h>
 
 using namespace emodeling;
 
 BodyPropertySetting::BodyPropertySetting(d2d::EditPanel* editPanel, d2d::ISprite* sprite)
 	: d2d::IPropertySetting(editPanel, wxT("Body"))
 {
-	m_body = static_cast<Body*>(sprite->getUserData());
+	m_body = static_cast<libmodeling::Body*>(sprite->getUserData());
 	assert(m_body);
 }
 
@@ -88,7 +89,7 @@ void BodyPropertySetting::onPropertyGridChange(const wxString& name, const wxAny
 	if (name == wxT("Name"))
 		m_body->name = wxANY_AS(value, wxString);
 	else if (name == wxT("Type"))
-		m_body->type = Body::Type(wxANY_AS(value, int));
+		m_body->type = libmodeling::Body::Type(wxANY_AS(value, int));
 	else if (name == wxT("LinearDamping"))
 		m_body->linearDamping = wxANY_AS(value, float);
 	else if (name == wxT("AngularDamping"))

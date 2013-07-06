@@ -21,24 +21,14 @@
 
 #include <drag2d.h>
 
+#include <easymodeling.h>
+
 namespace emodeling
 {
-	class Joint;
-	class RevoluteJoint;
-	class PrismaticJoint;
-	class DistanceJoint;
-	class PulleyJoint;
-	class GearJoint;
-	class WheelJoint;
-	class WeldJoint;
-	class FrictionJoint;
-	class RopeJoint;
-	class MotorJoint;
-
 	class JointPropertySetting : public d2d::IPropertySetting
 	{
 	public:
-		JointPropertySetting(d2d::EditPanel* editPanel, Joint* joint);
+		JointPropertySetting(d2d::EditPanel* editPanel, libmodeling::Joint* joint);
 
 		virtual void updatePanel(d2d::PropertySettingPanel* panel);
 
@@ -47,58 +37,58 @@ namespace emodeling
 		virtual void enablePropertyGrid(d2d::PropertySettingPanel* panel, bool bEnable);
 
 	private:
-		void createPropertyPanel(RevoluteJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(RevoluteJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(RevoluteJoint* joint,
+		void createPropertyPanel(libmodeling::RevoluteJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::RevoluteJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::RevoluteJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(PrismaticJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(PrismaticJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(PrismaticJoint* joint,
+		void createPropertyPanel(libmodeling::PrismaticJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::PrismaticJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::PrismaticJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(DistanceJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(DistanceJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(DistanceJoint* joint,
+		void createPropertyPanel(libmodeling::DistanceJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::DistanceJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::DistanceJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(PulleyJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(PulleyJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(PulleyJoint* joint,
+		void createPropertyPanel(libmodeling::PulleyJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::PulleyJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::PulleyJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(GearJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(GearJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(GearJoint* joint,
+		void createPropertyPanel(libmodeling::GearJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::GearJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::GearJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(WheelJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(WheelJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(WheelJoint* joint,
+		void createPropertyPanel(libmodeling::WheelJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::WheelJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::WheelJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(WeldJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(WeldJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(WeldJoint* joint,
+		void createPropertyPanel(libmodeling::WeldJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::WeldJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::WeldJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(FrictionJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(FrictionJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(FrictionJoint* joint,
+		void createPropertyPanel(libmodeling::FrictionJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::FrictionJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::FrictionJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(RopeJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(RopeJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(RopeJoint* joint,
+		void createPropertyPanel(libmodeling::RopeJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::RopeJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::RopeJoint* joint,
 			const wxString& name, const wxAny& value);
 
-		void createPropertyPanel(MotorJoint* joint, wxPropertyGrid* pg);
-		void updatePropertyPanel(MotorJoint* joint, wxPropertyGrid* pg);
-		void onPropertyGridChange(MotorJoint* joint,
+		void createPropertyPanel(libmodeling::MotorJoint* joint, wxPropertyGrid* pg);
+		void updatePropertyPanel(libmodeling::MotorJoint* joint, wxPropertyGrid* pg);
+		void onPropertyGridChange(libmodeling::MotorJoint* joint,
 			const wxString& name, const wxAny& value);
 
 	private:
-		Joint* m_joint;
+		libmodeling::Joint* m_joint;
 
 	}; // JointPropertySetting
 }

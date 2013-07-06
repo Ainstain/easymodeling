@@ -18,6 +18,8 @@
 
 #include "Context.h"
 
+#include <easymodeling.h>
+
 using namespace emodeling;
 
 Context* Context::m_instance = NULL;
@@ -28,6 +30,13 @@ Context::Context()
 	library = NULL;
 	stage = NULL;
 	toolbar = NULL;
+
+	world = new libmodeling::World;
+}
+
+Context::~Context()
+{
+	delete world;
 }
 
 Context* Context::Instance()

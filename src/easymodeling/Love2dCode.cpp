@@ -17,22 +17,10 @@
 */
 
 #include "Love2dCode.h"
-
 #include "Context.h"
-#include "Body.h"
-#include "Fixture.h"
-#include "RevoluteJoint.h"
-#include "PrismaticJoint.h"
-#include "DistanceJoint.h"
-#include "PulleyJoint.h"
-#include "GearJoint.h"
-#include "WheelJoint.h"
-#include "WeldJoint.h"
-#include "FrictionJoint.h"
-#include "RopeJoint.h"
-#include "MotorJoint.h"
-
 #include "StagePanel.h"
+
+#include <easymodeling.h>
 
 using namespace emodeling;
 using namespace ebuilder;
@@ -96,12 +84,12 @@ void Love2dCode::resolveLoadImages()
 	gen.line("images = {");
 	gen.tab();
 
-	std::vector<Body*> bodies;
-	Context::Instance()->stage->traverseBodies(d2d::FetchAllVisitor<Body>(bodies));
+	std::vector<libmodeling::Body*> bodies;
+	Context::Instance()->stage->traverseBodies(d2d::FetchAllVisitor<libmodeling::Body>(bodies));
 	std::map<std::string, std::string> mapNamePath;
 	for (size_t i = 0, n = bodies.size(); i < n; ++i)
 	{
-		Body* body = bodies[i];
+		libmodeling::Body* body = bodies[i];
 		std::string path = body->sprite->getSymbol().getFilepath();
 		std::string name = d2d::FilenameTools::getFilename(path);
 		mapNamePath.insert(std::make_pair(name, path));
@@ -126,16 +114,16 @@ void Love2dCode::resolveLoadWorld()
 {
 	CodeGenerator& gen = *m_genLoad;
 
-	const World& world = Context::Instance()->world;
+	const libmodeling::World* world = Context::Instance()->world;
 
 	// -- Create the world.
 	gen.line("-- Create the world.");
 	// world = love.physics.newWorld(x, y)
-	std::string x = wxString::FromDouble(world.gravity.x, 1);
-	std::string y = wxString::FromDouble(-world.gravity.y, 1); // love2d's origin is left-top
+	std::string x = wxString::FromDouble(world->gravity.x, 1);
+	std::string y = wxString::FromDouble(-world->gravity.y, 1); // love2d's origin is left-top
 	lua::assign(gen, "", "world", lua::call("", "love.physics.newWorld", 2, x.c_str(), y.c_str()));
 	// world:setAllowSleeping()
-	lua::call("world", "setAllowSleeping", 1, world.allowSleep ? "true" : "false");
+	lua::call("world", "setAllowSleeping", 1, world->allowSleep ? "true" : "false");
 }
 
 void Love2dCode::resolveLoadBodies()
@@ -148,11 +136,11 @@ void Love2dCode::resolveLoadBodies()
 	gen.line("local shape");
 	// local fixtures
 	gen.line("local fixtures");
-	std::vector<Body*> bodies;
-	Context::Instance()->stage->traverseBodies(d2d::FetchAllVisitor<Body>(bodies));
+	std::vector<libmodeling::Body*> bodies;
+	Context::Instance()->stage->traverseBodies(d2d::FetchAllVisitor<libmodeling::Body>(bodies));
 	for (size_t i = 0, n = bodies.size(); i < n; ++i)
 	{
-		Body* body = bodies[i];
+		libmodeling::Body* body = bodies[i];
 
 		gen.line();
 
@@ -167,13 +155,13 @@ void Love2dCode::resolveLoadBodies()
 		std::string type;
 		switch (body->type)
 		{
-		case Body::e_static:
+		case libmodeling::Body::e_static:
 			type = "\"static\"";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 			break;
-		case Body::e_dynamic:
+		case libmodeling::Body::e_dynamic:
 			type = "\"dynamic\"";
 			break;
-		case Body::e_kinematic:
+		case libmodeling::Body::e_kinematic:
 			type = "\"kinematic\"";
 			break;
 		}
@@ -238,13 +226,13 @@ void Love2dCode::resolveLoadBodies()
 	}
 }
 
-void Love2dCode::resolveLoadFixtures(Body* body)
+void Love2dCode::resolveLoadFixtures(libmodeling::Body* body)
 {
 	CodeGenerator& gen = *m_genLoad;
 
 	for (size_t i = 0, n = body->fixtures.size(); i < n; ++i)
 	{
-		Fixture* fData = body->fixtures[i];
+		libmodeling::Fixture* fData = body->fixtures[i];
 
 		std::string newShape;
 		if (d2d::CircleShape* circle = dynamic_cast<d2d::CircleShape*>(fData->shape))
@@ -352,23 +340,23 @@ void Love2dCode::resolveLoadJoints()
 	// -- Create joints.
 	gen.line("-- Create joints.");
 
-	std::vector<Joint*> joints;
-	Context::Instance()->stage->traverseJoints(d2d::FetchAllVisitor<Joint>(joints));
+	std::vector<libmodeling::Joint*> joints;
+	Context::Instance()->stage->traverseJoints(d2d::FetchAllVisitor<libmodeling::Joint>(joints));
 	// move gear joint to the end
 	size_t iLast = joints.size() - 1;
 	for (size_t i = 0, n = joints.size(); i < n; ++i)
 	{
-		if (joints[i]->type == Joint::e_gearJoint)
+		if (joints[i]->type == libmodeling::Joint::e_gearJoint)
 		{
-			Joint* tmp = joints[i];
+			libmodeling::Joint* tmp = joints[i];
 			joints[i] = joints[iLast];
 			joints[iLast] = tmp;
 			--iLast;
 		}
 	}
 
-	std::vector<Body*> bodies;
-	Context::Instance()->stage->traverseBodies(d2d::FetchAllVisitor<Body>(bodies));
+	std::vector<libmodeling::Body*> bodies;
+	Context::Instance()->stage->traverseBodies(d2d::FetchAllVisitor<libmodeling::Body>(bodies));
 	for (size_t i = 0, n = joints.size(); i < n; ++i)
 	{
 		gen.line();
@@ -376,10 +364,10 @@ void Love2dCode::resolveLoadJoints()
 	}
 }
 
-void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t index,
-								  const std::vector<Body*>& bodies)
+void Love2dCode::resolveLoadJoint(const std::vector<libmodeling::Joint*>& joints, size_t index,
+								  const std::vector<libmodeling::Body*>& bodies)
 {
-	Joint* j = joints[index];
+	libmodeling::Joint* j = joints[index];
 
 	CodeGenerator& gen = *m_genLoad;
 
@@ -401,9 +389,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 
 	switch (j->type)
 	{
-	case Joint::e_revoluteJoint:
+	case libmodeling::Joint::e_revoluteJoint:
 		{
-			RevoluteJoint* joint = static_cast<RevoluteJoint*>(j);
+			libmodeling::RevoluteJoint* joint = static_cast<libmodeling::RevoluteJoint*>(j);
 
 			d2d::Vector anchorA = joint->getWorldAnchorA();
 			std::string x = wxString::FromDouble(anchorA.x, 1),
@@ -445,9 +433,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			}
 		}
 		break;
-	case Joint::e_prismaticJoint:
+	case libmodeling::Joint::e_prismaticJoint:
 		{
-			PrismaticJoint* joint = static_cast<PrismaticJoint*>(j);
+			libmodeling::PrismaticJoint* joint = static_cast<libmodeling::PrismaticJoint*>(j);
 
 			d2d::Vector anchorA = joint->getWorldAnchorA(),
 				anchorB = joint->getWorldAnchorB();
@@ -495,9 +483,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			}
 		}
 		break;
-	case Joint::e_distanceJoint:
+	case libmodeling::Joint::e_distanceJoint:
 		{
-			DistanceJoint* joint = static_cast<DistanceJoint*>(j);
+			libmodeling::DistanceJoint* joint = static_cast<libmodeling::DistanceJoint*>(j);
 
 			d2d::Vector anchorA = joint->getWorldAnchorA(),
 				anchorB = joint->getWorldAnchorB();
@@ -525,9 +513,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			}
 		}
 		break;
-	case Joint::e_pulleyJoint:
+	case libmodeling::Joint::e_pulleyJoint:
 		{
-			PulleyJoint* joint = static_cast<PulleyJoint*>(j);
+			libmodeling::PulleyJoint* joint = static_cast<libmodeling::PulleyJoint*>(j);
 
 			std::string gxA = wxString::FromDouble(joint->groundAnchorA.x, 1),
 				gyA = wxString::FromDouble(-joint->groundAnchorA.y, 1);
@@ -549,9 +537,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			lua::assign(gen, "local", name, newJoint);
 		}
 		break;
-	case Joint::e_gearJoint:
+	case libmodeling::Joint::e_gearJoint:
 		{
-			GearJoint* joint = static_cast<GearJoint*>(j);
+			libmodeling::GearJoint* joint = static_cast<libmodeling::GearJoint*>(j);
 
 			size_t i1 = 0, i2 = 0;
 			for (size_t n = joints.size(); i1 < n; ++i1)
@@ -572,9 +560,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			lua::assign(gen, "local", name, newJoint);
 		}
 		break;
-	case Joint::e_wheelJoint:
+	case libmodeling::Joint::e_wheelJoint:
 		{
-			WheelJoint* joint = static_cast<WheelJoint*>(j);
+			libmodeling::WheelJoint* joint = static_cast<libmodeling::WheelJoint*>(j);
 
 			std::string xA = wxString::FromDouble(joint->getWorldAnchorB().x, 1),
 				yA = wxString::FromDouble(-joint->getWorldAnchorB().y, 1);
@@ -617,9 +605,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			}
 		}
 		break;
-	case Joint::e_weldJoint:
+	case libmodeling::Joint::e_weldJoint:
 		{
-			WeldJoint* joint = static_cast<WeldJoint*>(j);
+			libmodeling::WeldJoint* joint = static_cast<libmodeling::WeldJoint*>(j);
 
 			d2d::Vector anchorA = joint->getWorldAnchorA(),
 				anchorB = joint->getWorldAnchorB();
@@ -647,9 +635,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			}
 		}
 		break;
-	case Joint::e_frictionJoint:
+	case libmodeling::Joint::e_frictionJoint:
 		{
-			FrictionJoint* joint = static_cast<FrictionJoint*>(j);
+			libmodeling::FrictionJoint* joint = static_cast<libmodeling::FrictionJoint*>(j);
 
 			d2d::Vector anchorA = joint->getWorldAnchorA(),
 				anchorB = joint->getWorldAnchorB();
@@ -677,9 +665,9 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 			}
 		}
 		break;
-	case Joint::e_ropeJoint:
+	case libmodeling::Joint::e_ropeJoint:
 		{
-			RopeJoint* joint = static_cast<RopeJoint*>(j);
+			libmodeling::RopeJoint* joint = static_cast<libmodeling::RopeJoint*>(j);
 
 			d2d::Vector anchorA = joint->getWorldAnchorA(),
 				anchorB = joint->getWorldAnchorB();
@@ -697,7 +685,7 @@ void Love2dCode::resolveLoadJoint(const std::vector<Joint*>& joints, size_t inde
 
 		}
 		break;
-	case Joint::e_motorJoint:
+	case libmodeling::Joint::e_motorJoint:
 		{
 		}
 		break;

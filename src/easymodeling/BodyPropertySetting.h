@@ -21,10 +21,10 @@
 
 #include <drag2d.h>
 
+namespace libmodeling { class Body; }
+
 namespace emodeling
 {
-	class Body;
-
 	class BodyPropertySetting : public d2d::IPropertySetting
 	{
 	public:
@@ -37,7 +37,7 @@ namespace emodeling
 		virtual void enablePropertyGrid(d2d::PropertySettingPanel* panel, bool bEnable);
 
 	private:
-		Body* m_body;
+		libmodeling::Body* m_body;
 
 	}; // BodyPropertySetting
 }

@@ -18,8 +18,6 @@
 
 #include "SelectFixtureOP.h"
 #include "StagePanel.h"
-#include "Body.h"
-#include "Fixture.h"
 #include "FixturePropertySetting.h"
 #include "WorldPropertySetting.h"
 #include "DrawUtils.h"
@@ -50,7 +48,7 @@ bool SelectFixtureOP::onMouseLeftDown(int x, int y)
 	if (sprite)
 	{
 		m_selected = NULL;
-		Body* body = static_cast<Body*>(sprite->getUserData());
+		libmodeling::Body* body = static_cast<libmodeling::Body*>(sprite->getUserData());
 		for (size_t i = 0, n = body->fixtures.size(); i < n; ++i)
 		{
 			if (body->fixtures[i]->isContain(pos))
@@ -91,7 +89,7 @@ bool SelectFixtureOP::onMouseLeftUp(int x, int y)
 		m_selected = NULL;
 		for (size_t i = 0, n = sprites.size(); i < n; ++i)
 		{
-			Body* body = static_cast<Body*>(sprites[i]->getUserData());
+			libmodeling::Body* body = static_cast<libmodeling::Body*>(sprites[i]->getUserData());
 			for (size_t j = 0, m = body->fixtures.size(); j < m; ++j)
 			{
 				if (body->fixtures[j]->isIntersect(rect))
@@ -123,7 +121,7 @@ bool SelectFixtureOP::onMouseMove(int x, int y)
 	d2d::ISprite* sprite = static_cast<StagePanel*>(m_editPanel)->querySpriteByPos(pos);
 	if (sprite)
 	{
-		Body* body = static_cast<Body*>(sprite->getUserData());
+		libmodeling::Body* body = static_cast<libmodeling::Body*>(sprite->getUserData());
 		if (body)
 		{
 			for (size_t i = 0, n = body->fixtures.size(); i < n; ++i)

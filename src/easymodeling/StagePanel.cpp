@@ -18,10 +18,9 @@
 
 #include "StagePanel.h"
 #include "StageCanvas.h"
-#include "Body.h"
-#include "Joint.h"
-#include "Fixture.h"
 #include "Context.h"
+
+#include <easymodeling.h>
 
 using namespace emodeling;
 
@@ -64,12 +63,12 @@ void StagePanel::insertSprite(d2d::ISprite* sprite)
 	
 	if (sprite->getUserData())
 	{
-		Body* body = static_cast<Body*>(sprite->getUserData());
+		libmodeling::Body* body = static_cast<libmodeling::Body*>(sprite->getUserData());
 		m_bodies.push_back(body);
 	}
 	else
 	{
-		Body* body = new Body;
+		libmodeling::Body* body = new libmodeling::Body;
 
 		wxString path = d2d::FilenameTools::getFilePathExceptExtension(sprite->getSymbol().getFilepath())
 			+ "_" + d2d::FileNameParser::getFileTag(d2d::FileNameParser::e_shape) + ".json";
@@ -88,9 +87,9 @@ void StagePanel::clearSprites()
 {
 	d2d::SpritesPanelImpl::clearSprites();
 
-	for_each(m_bodies.begin(), m_bodies.end(), DeletePointerFunctor<Body>());
+	for_each(m_bodies.begin(), m_bodies.end(), DeletePointerFunctor<libmodeling::Body>());
 	m_bodies.clear();
-	for_each(m_joints.begin(), m_joints.end(), DeletePointerFunctor<Joint>());
+	for_each(m_joints.begin(), m_joints.end(), DeletePointerFunctor<libmodeling::Joint>());
 	m_joints.clear();
 }
 
@@ -106,7 +105,7 @@ void StagePanel::querySpritesByRect(const d2d::Rect& rect, std::vector<d2d::ISpr
 	traverseSprites(RectQueryVisitor(rect, result), d2d::e_editable);
 }
 
-Joint* StagePanel::queryJointByPos(const d2d::Vector& pos) const
+libmodeling::Joint* StagePanel::queryJointByPos(const d2d::Vector& pos) const
 {
 	for (size_t i = 0, n = m_joints.size(); i < n; ++i)
 		if (m_joints[i]->isContain(pos))
@@ -114,7 +113,7 @@ Joint* StagePanel::queryJointByPos(const d2d::Vector& pos) const
 	return NULL;
 }
 
-void StagePanel::queryJointsByRect(const d2d::Rect& rect, std::vector<Joint*>& result) const
+void StagePanel::queryJointsByRect(const d2d::Rect& rect, std::vector<libmodeling::Joint*>& result) const
 {
 	for (size_t i = 0, n = m_joints.size(); i < n; ++i)
 	{
@@ -123,7 +122,7 @@ void StagePanel::queryJointsByRect(const d2d::Rect& rect, std::vector<Joint*>& r
 	}
 }
 
-void StagePanel::removeJoint(Joint* joint)
+void StagePanel::removeJoint(libmodeling::Joint* joint)
 {
 	for (size_t i = 0, n = m_joints.size(); i < n; ++i)
 	{
@@ -138,7 +137,7 @@ void StagePanel::removeJoint(Joint* joint)
 
 void StagePanel::traverseBodies(d2d::IVisitor& visitor) const
 {
-	std::vector<Body*>::const_iterator itr = m_bodies.begin();
+	std::vector<libmodeling::Body*>::const_iterator itr = m_bodies.begin();
 	for ( ; itr != m_bodies.end(); ++itr)
 	{
 		bool hasNext;
@@ -149,7 +148,7 @@ void StagePanel::traverseBodies(d2d::IVisitor& visitor) const
 
 void StagePanel::traverseJoints(d2d::IVisitor& visitor) const
 {
-	std::vector<Joint*>::const_iterator itr = m_joints.begin();
+	std::vector<libmodeling::Joint*>::const_iterator itr = m_joints.begin();
 	for ( ; itr != m_joints.end(); ++itr)
 	{
 		bool hasNext;
@@ -158,7 +157,7 @@ void StagePanel::traverseJoints(d2d::IVisitor& visitor) const
 	}
 }
 
-void StagePanel::loadBody(const wxString& filepath, Body& body)
+void StagePanel::loadBody(const wxString& filepath, libmodeling::Body& body)
 {
 	std::vector<d2d::IShape*> shapes;
 	d2d::EShapeFileAdapter adapter(shapes);
@@ -166,7 +165,7 @@ void StagePanel::loadBody(const wxString& filepath, Body& body)
 
 	for (size_t i = 0, n = shapes.size();  i< n; ++i)
 	{
-		Fixture* fixture = new Fixture;
+		libmodeling::Fixture* fixture = new libmodeling::Fixture;
 		fixture->body = &body;
 
 		fixture->shape = shapes[i];
@@ -195,9 +194,9 @@ void StagePanel::loadBody(const wxString& filepath, Body& body)
 	}
 }
 
-void StagePanel::loadBody(d2d::ISprite* sprite, Body& body)
+void StagePanel::loadBody(d2d::ISprite* sprite, libmodeling::Body& body)
 {
-	Fixture* fixture = new Fixture;
+	libmodeling::Fixture* fixture = new libmodeling::Fixture;
 	fixture->body = &body;
 
 	const float width = sprite->getSymbol().getWidth(),
@@ -223,7 +222,7 @@ void StagePanel::PointQueryVisitor::
 visit(d2d::ICloneable* object, bool& bFetchNext)
 {
 	d2d::ISprite* sprite = static_cast<d2d::ISprite*>(object);
-	Body* data = static_cast<Body*>(sprite->getUserData());
+	libmodeling::Body* data = static_cast<libmodeling::Body*>(sprite->getUserData());
 	if (data->isContain(m_pos))
 	{
 		*m_pResult = sprite;
@@ -249,7 +248,7 @@ void StagePanel::RectQueryVisitor::
 visit(d2d::ICloneable* object, bool& bFetchNext)
 {
 	d2d::ISprite* sprite = static_cast<d2d::ISprite*>(object);
-	Body* data = static_cast<Body*>(sprite->getUserData());
+	libmodeling::Body* data = static_cast<libmodeling::Body*>(sprite->getUserData());
 	if (data->isIntersect(m_rect))
 		m_result.push_back(sprite);
 	bFetchNext = true;

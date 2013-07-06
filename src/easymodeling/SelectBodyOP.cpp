@@ -55,7 +55,7 @@ bool SelectBodyOP::onMouseMove(int x, int y)
 	d2d::Vector pos = m_editPanel->transPosScreenToProject(x, y);
 	d2d::ISprite* selected = m_spritesImpl->querySpriteByPos(pos);
 	if (selected)
-		m_mouseOn = static_cast<Body*>(selected->getUserData());
+		m_mouseOn = static_cast<libmodeling::Body*>(selected->getUserData());
 
 	m_editPanel->Refresh();
 
@@ -116,7 +116,7 @@ visit(d2d::ICloneable* object, bool& bFetchNext)
 {
 	std::vector<d2d::Vector> bound;
 	d2d::ISprite* sprite = static_cast<d2d::ISprite*>(object);
-	Body* body = static_cast<Body*>(sprite->getUserData());
+	libmodeling::Body* body = static_cast<libmodeling::Body*>(sprite->getUserData());
 	DrawUtils::drawBody(body, DrawUtils::e_selected);
 	bFetchNext = true;
 }

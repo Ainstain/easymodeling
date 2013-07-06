@@ -18,8 +18,7 @@
 
 #include "BodyEditStage.h"
 
-#include "Fixture.h"
-#include "Body.h"
+#include <easymodeling.h>
 
 using namespace emodeling;
 
@@ -39,7 +38,7 @@ void BodyEditStage::removeShape(d2d::IShape* shape)
 
 	if (m_sprite && m_sprite->getUserData())
 	{
-		Body* bd = static_cast<Body*>(m_sprite->getUserData());
+		libmodeling::Body* bd = static_cast<libmodeling::Body*>(m_sprite->getUserData());
 		for (size_t i = 0, n = bd->fixtures.size(); i < n; ++i)
 		{
 			if (bd->fixtures[i]->shape == shape)
@@ -58,8 +57,8 @@ void BodyEditStage::insertShape(d2d::IShape* shape)
 
 	if (m_sprite && m_sprite->getUserData())
 	{
-		Body* bd = static_cast<Body*>(m_sprite->getUserData());
-		Fixture* fixture = new Fixture;
+		libmodeling::Body* bd = static_cast<libmodeling::Body*>(m_sprite->getUserData());
+		libmodeling::Fixture* fixture = new libmodeling::Fixture;
 		fixture->body = bd;
 		shape->retain();
 		fixture->shape = shape;
@@ -73,7 +72,7 @@ void BodyEditStage::loadShapes()
 
 	if (m_sprite && m_sprite->getUserData())
 	{
-		Body* bd = static_cast<Body*>(m_sprite->getUserData());
+		libmodeling::Body* bd = static_cast<libmodeling::Body*>(m_sprite->getUserData());
 		m_shapes.reserve(bd->fixtures.size());
 		for (size_t i = 0, n = bd->fixtures.size(); i < n; ++i)
 		{

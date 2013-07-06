@@ -21,11 +21,14 @@
 
 #include <drag2d.h>
 
-namespace emodeling
+namespace libmodeling
 {
 	class Body;
 	class Joint;
+}
 
+namespace emodeling
+{
 	class PreviewPanel : public d2d::EditPanel, 
 		public d2d::PhysicsPanelImpl
 	{
@@ -39,46 +42,46 @@ namespace emodeling
 		class LoadBodyVisitor : public d2d::IVisitor
 		{
 		public:
-			LoadBodyVisitor(b2World* world, std::map<Body*, b2Body*>& mapBody);
+			LoadBodyVisitor(b2World* world, std::map<libmodeling::Body*, b2Body*>& mapBody);
 			virtual void visit(d2d::ICloneable* object, bool& bFetchNext);
 
 		private:
 			b2World* m_world;
 
-			std::map<Body*, b2Body*>& m_mapBody;
+			std::map<libmodeling::Body*, b2Body*>& m_mapBody;
 
 		}; // LoadBodyVisitor
 
 		class LoadJointVisitor : public d2d::IVisitor
 		{
 		public:
-			LoadJointVisitor(b2World* world, const std::map<Body*, b2Body*>& mapBody,
-				std::map<Joint*, b2Joint*>& mapJoint);
+			LoadJointVisitor(b2World* world, const std::map<libmodeling::Body*, b2Body*>& mapBody,
+				std::map<libmodeling::Joint*, b2Joint*>& mapJoint);
 
 			virtual void visit(d2d::ICloneable* object, bool& bFetchNext);
 
 		private:
 			b2World* m_world;
 
-			const std::map<Body*, b2Body*>& m_mapBody;
+			const std::map<libmodeling::Body*, b2Body*>& m_mapBody;
 
-			std::map<Joint*, b2Joint*>& m_mapJoint;
+			std::map<libmodeling::Joint*, b2Joint*>& m_mapJoint;
 
 		}; // LoadJointVisitor
 
 		class LoadGearJointVisitor : public d2d::IVisitor
 		{
 		public:
-			LoadGearJointVisitor(b2World* world, const std::map<Body*, b2Body*>& mapBody,
-				const std::map<Joint*, b2Joint*>& mapJoint);
+			LoadGearJointVisitor(b2World* world, const std::map<libmodeling::Body*, b2Body*>& mapBody,
+				const std::map<libmodeling::Joint*, b2Joint*>& mapJoint);
 
 			virtual void visit(d2d::ICloneable* object, bool& bFetchNext);
 
 		private:
 			b2World* m_world;
 
-			const std::map<Body*, b2Body*>& m_mapBody;
-			const std::map<Joint*, b2Joint*>& m_mapJoint;
+			const std::map<libmodeling::Body*, b2Body*>& m_mapBody;
+			const std::map<libmodeling::Joint*, b2Joint*>& m_mapJoint;
 
 		}; // LoadGearJointVisitor
 

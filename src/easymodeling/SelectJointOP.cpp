@@ -17,18 +17,7 @@
 */
 
 #include "SelectJointOP.h"
-#include "Body.h"
 #include "DrawUtils.h"
-#include "RevoluteJoint.h"
-#include "PrismaticJoint.h"
-#include "DistanceJoint.h"
-#include "PulleyJoint.h"
-#include "GearJoint.h"
-#include "WheelJoint.h"
-#include "WeldJoint.h"
-#include "FrictionJoint.h"
-#include "RopeJoint.h"
-#include "MotorJoint.h"
 #include "StagePanel.h"
 #include "JointPropertySetting.h"
 #include "WorldPropertySetting.h"
@@ -63,7 +52,7 @@ bool SelectJointOP::onKeyDown(int keyCode)
 bool SelectJointOP::onMouseLeftDown(int x, int y)
 {
 	d2d::Vector pos = m_editPanel->transPosScreenToProject(x, y);
-	Joint* selected = static_cast<StagePanel*>(m_editPanel)->queryJointByPos(pos);
+	libmodeling::Joint* selected = static_cast<StagePanel*>(m_editPanel)->queryJointByPos(pos);
 	if (selected && !m_selected || !selected && m_selected)
 		m_editPanel->Refresh();
 	if (selected)
@@ -134,7 +123,7 @@ bool SelectJointOP::onMouseMove(int x, int y)
 		return true;
 
 	d2d::Vector pos = m_editPanel->transPosScreenToProject(x, y);
-	Joint* joint = static_cast<StagePanel*>(m_editPanel)->queryJointByPos(pos);
+	libmodeling::Joint* joint = static_cast<StagePanel*>(m_editPanel)->queryJointByPos(pos);
 	if (joint && !m_mouseOn || !joint && m_mouseOn)
 		m_editPanel->Refresh();
 
@@ -153,9 +142,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 		d2d::Vector pos = m_editPanel->transPosScreenToProject(x, y);
 		switch (m_selected->type)
 		{
-		case Joint::e_revoluteJoint:
+		case libmodeling::Joint::e_revoluteJoint:
 			{
-				RevoluteJoint* joint = static_cast<RevoluteJoint*>(m_selected);
+				libmodeling::RevoluteJoint* joint = static_cast<libmodeling::RevoluteJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -164,9 +153,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_prismaticJoint:
+		case libmodeling::Joint::e_prismaticJoint:
 			{
-				PrismaticJoint* joint = static_cast<PrismaticJoint*>(m_selected);
+				libmodeling::PrismaticJoint* joint = static_cast<libmodeling::PrismaticJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -175,9 +164,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_distanceJoint:
+		case libmodeling::Joint::e_distanceJoint:
 			{
-				DistanceJoint* joint = static_cast<DistanceJoint*>(m_selected);
+				libmodeling::DistanceJoint* joint = static_cast<libmodeling::DistanceJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -186,9 +175,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_pulleyJoint:
+		case libmodeling::Joint::e_pulleyJoint:
 			{
-				PulleyJoint* joint = static_cast<PulleyJoint*>(m_selected);
+				libmodeling::PulleyJoint* joint = static_cast<libmodeling::PulleyJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				const float disGA = d2d::Math::getDistance(pos, joint->groundAnchorA),
@@ -205,13 +194,13 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->groundAnchorB = pos;					
 			}
 			break;
-		case Joint::e_gearJoint:
+		case libmodeling::Joint::e_gearJoint:
 			{
 			}
 			break;
-		case Joint::e_wheelJoint:
+		case libmodeling::Joint::e_wheelJoint:
 			{
-				WheelJoint* joint = static_cast<WheelJoint*>(m_selected);
+				libmodeling::WheelJoint* joint = static_cast<libmodeling::WheelJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -220,9 +209,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_weldJoint:
+		case libmodeling::Joint::e_weldJoint:
 			{
-				WeldJoint* joint = static_cast<WeldJoint*>(m_selected);
+				libmodeling::WeldJoint* joint = static_cast<libmodeling::WeldJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -231,9 +220,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_frictionJoint:
+		case libmodeling::Joint::e_frictionJoint:
 			{
-				FrictionJoint* joint = static_cast<FrictionJoint*>(m_selected);
+				libmodeling::FrictionJoint* joint = static_cast<libmodeling::FrictionJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -242,9 +231,9 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_ropeJoint:
+		case libmodeling::Joint::e_ropeJoint:
 			{
-				RopeJoint* joint = static_cast<RopeJoint*>(m_selected);
+				libmodeling::RopeJoint* joint = static_cast<libmodeling::RopeJoint*>(m_selected);
 				const float disA = d2d::Math::getDistance(pos, joint->getWorldAnchorA()),
 					disB = d2d::Math::getDistance(pos, joint->getWorldAnchorB());
 				if (disA < disB)
@@ -253,7 +242,7 @@ bool SelectJointOP::onMouseDrag(int x, int y)
 					joint->setLocalAnchorB(pos);
 			}
 			break;
-		case Joint::e_motorJoint:
+		case libmodeling::Joint::e_motorJoint:
 			{
 			}
 			break;
@@ -273,9 +262,9 @@ bool SelectJointOP::onDraw() const
 	m_selection->traverse(DrawSelectedVisitor());
 
 	if (m_mouseOn)
-		m_mouseOn->draw(Joint::e_mouseOn);
+		m_mouseOn->draw(libmodeling::Joint::e_mouseOn);
 	if (m_selected) 
-		m_selected->draw(Joint::e_selected);
+		m_selected->draw(libmodeling::Joint::e_selected);
 
 	return false;
 }
@@ -300,7 +289,7 @@ visit(d2d::ICloneable* object, bool& bFetchNext)
 {
 	std::vector<d2d::Vector> bound;
 	d2d::ISprite* sprite = static_cast<d2d::ISprite*>(object);
-	Body* body = static_cast<Body*>(sprite->getUserData());
+	libmodeling::Body* body = static_cast<libmodeling::Body*>(sprite->getUserData());
 	DrawUtils::drawBody(body, DrawUtils::e_selected);
 	bFetchNext = true;
 }

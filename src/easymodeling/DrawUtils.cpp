@@ -17,12 +17,10 @@
 */
 
 #include "DrawUtils.h"
-#include "Body.h"
-#include "Fixture.h"
 
 using namespace emodeling;
 
-void DrawUtils::drawBody(Body* body, DrawType dType)
+void DrawUtils::drawBody(libmodeling::Body* body, DrawType dType)
 {
 	d2d::Colorf cFace, cEdge;
 	getBodyColor(body->type, dType, cFace, cEdge);
@@ -32,7 +30,7 @@ void DrawUtils::drawBody(Body* body, DrawType dType)
 	d2d::SpriteDraw::end(body->sprite);
 }
 
-void DrawUtils::drawFixture(Fixture* fixture, DrawType dType,
+void DrawUtils::drawFixture(libmodeling::Fixture* fixture, DrawType dType,
 							bool onlyFixture)
 {
 	d2d::Colorf cFace, cEdge;
@@ -46,18 +44,18 @@ void DrawUtils::drawFixture(Fixture* fixture, DrawType dType,
 	d2d::SpriteDraw::end(fixture->body->sprite);
 }
 
-void DrawUtils::getBodyColor(Body::Type type, DrawType dType,
+void DrawUtils::getBodyColor(libmodeling::Body::Type type, DrawType dType,
 							 d2d::Colorf& cFace, d2d::Colorf& cEdge)
 {
 	switch (type)
 	{
-	case Body::e_static:
+	case libmodeling::Body::e_static:
 		cFace.set(0.5f, 0.9f, 0.5f, 0.2f);
 		break;
-	case Body::e_kinematic:
+	case libmodeling::Body::e_kinematic:
 		cFace.set(0.5f, 0.5f, 0.9f, 0.2f);
 		break;
-	case Body::e_dynamic:
+	case libmodeling::Body::e_dynamic:
 		cFace.set(0.5f, 0.5f, 0.3f, 0.2f);
 		break;
 	}

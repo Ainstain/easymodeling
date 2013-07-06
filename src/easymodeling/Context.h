@@ -21,13 +21,12 @@
 
 #include <drag2d.h>
 
-#include "World.h"
+namespace libmodeling { class World; }
 
 namespace emodeling
 {
 	class StagePanel;
 	class ToolbarPanel;
-	class World;
 
 	class Context
 	{
@@ -37,13 +36,14 @@ namespace emodeling
 		StagePanel* stage;
 		ToolbarPanel* toolbar;
 
-		World world;
+		libmodeling::World* world;
 
 	public:
 		static Context* Instance();
 
 	private:
 		Context();
+		~Context();
 
 	private:
 		static Context* m_instance;

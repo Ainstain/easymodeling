@@ -21,10 +21,11 @@
 
 #include <drag2d.h>
 
+namespace libmodeling { class Fixture; }
+
 namespace emodeling
 {
 	class StagePanel;
-	class Fixture;
 
 	class SelectFixtureOP : public d2d::DrawRectangleOP
 	{
@@ -46,8 +47,8 @@ namespace emodeling
 
 		d2d::Vector m_firstPos;
 
-		Fixture* m_selected;
-		Fixture* m_mouseOn;
+		libmodeling::Fixture* m_selected;
+		libmodeling::Fixture* m_mouseOn;
 
 	}; // SelectFixtureOP
 }

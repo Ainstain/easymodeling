@@ -19,10 +19,10 @@
 #include "PreviewPanel.h"
 #include "PreviewCanvas.h"
 #include "StagePanel.h"
-#include "Body.h"
-#include "Joint.h"
 #include "ResolveToB2.h"
 #include "Context.h"
+
+#include <easymodeling.h>
 
 using namespace emodeling;
 
@@ -34,20 +34,20 @@ PreviewPanel::PreviewPanel(wxWindow* parent)
 	m_canvas = new PreviewCanvas(this);
 	m_editOP = new d2d::DragPhysicsOP(this, m_world, m_ground);
 
-	std::map<Body*, b2Body*> mapBody;
+	std::map<libmodeling::Body*, b2Body*> mapBody;
 	Context::Instance()->stage->traverseBodies(LoadBodyVisitor(m_world, mapBody));
-	std::map<Joint*, b2Joint*> mapJoint;
+	std::map<libmodeling::Joint*, b2Joint*> mapJoint;
 	Context::Instance()->stage->traverseJoints(LoadJointVisitor(m_world, mapBody, mapJoint));
 	Context::Instance()->stage->traverseJoints(LoadGearJointVisitor(m_world, mapBody, mapJoint));
 
-	const World& world = Context::Instance()->world;
-	m_world->SetGravity(b2Vec2(world.gravity.x, world.gravity.y));
-	m_world->SetAllowSleeping(world.allowSleep);
-	m_world->SetWarmStarting(world.warmStarting);
-	m_world->SetContinuousPhysics(world.continuousPhysics);
-	m_world->SetSubStepping(world.subStepping);
-	m_velocityIterations = world.velocityIterations;
-	m_positionIterations = world.positionIterations;
+	const libmodeling::World* world = Context::Instance()->world;
+	m_world->SetGravity(b2Vec2(world->gravity.x, world->gravity.y));
+	m_world->SetAllowSleeping(world->allowSleep);
+	m_world->SetWarmStarting(world->warmStarting);
+	m_world->SetContinuousPhysics(world->continuousPhysics);
+	m_world->SetSubStepping(world->subStepping);
+	m_velocityIterations = world->velocityIterations;
+	m_positionIterations = world->positionIterations;
 }
 
 void PreviewPanel::createGround()
@@ -78,7 +78,7 @@ void PreviewPanel::createGround()
 //////////////////////////////////////////////////////////////////////////
 
 PreviewPanel::LoadBodyVisitor::
-LoadBodyVisitor(b2World* world, std::map<Body*, b2Body*>& mapBody) 
+LoadBodyVisitor(b2World* world, std::map<libmodeling::Body*, b2Body*>& mapBody) 
 	: m_world(world)
 	, m_mapBody(mapBody)
 {}
@@ -86,7 +86,7 @@ LoadBodyVisitor(b2World* world, std::map<Body*, b2Body*>& mapBody)
 void PreviewPanel::LoadBodyVisitor::
 visit(d2d::ICloneable* object, bool& bFetchNext)
 {
-	Body* data = static_cast<Body*>(object);
+	libmodeling::Body* data = static_cast<libmodeling::Body*>(object);
 
 	b2Body* body = ResolveToB2::createBody(*data, m_world, m_mapBody);
 
@@ -98,8 +98,8 @@ visit(d2d::ICloneable* object, bool& bFetchNext)
 //////////////////////////////////////////////////////////////////////////
 
 PreviewPanel::LoadJointVisitor::
-LoadJointVisitor(b2World* world, const std::map<Body*, b2Body*>& mapBody,
-				 std::map<Joint*, b2Joint*>& mapJoint) 
+LoadJointVisitor(b2World* world, const std::map<libmodeling::Body*, b2Body*>& mapBody,
+				 std::map<libmodeling::Joint*, b2Joint*>& mapJoint) 
 	: m_world(world) 
 	, m_mapBody(mapBody)
 	, m_mapJoint(mapJoint)
@@ -108,7 +108,7 @@ LoadJointVisitor(b2World* world, const std::map<Body*, b2Body*>& mapBody,
 void PreviewPanel::LoadJointVisitor::
 visit(d2d::ICloneable* object, bool& bFetchNext)
 {
-	Joint* data = static_cast<Joint*>(object);
+	libmodeling::Joint* data = static_cast<libmodeling::Joint*>(object);
 
 	b2Joint* joint = ResolveToB2::createJoint(*data, m_world, m_mapBody);
 	if (joint)
@@ -122,8 +122,8 @@ visit(d2d::ICloneable* object, bool& bFetchNext)
 //////////////////////////////////////////////////////////////////////////
 
 PreviewPanel::LoadGearJointVisitor::
-LoadGearJointVisitor(b2World* world, const std::map<Body*, b2Body*>& mapBody,
-					 const std::map<Joint*, b2Joint*>& mapJoint) 
+LoadGearJointVisitor(b2World* world, const std::map<libmodeling::Body*, b2Body*>& mapBody,
+					 const std::map<libmodeling::Joint*, b2Joint*>& mapJoint) 
 	: m_world(world) 
 	, m_mapBody(mapBody)
 	, m_mapJoint(mapJoint)
@@ -132,7 +132,7 @@ LoadGearJointVisitor(b2World* world, const std::map<Body*, b2Body*>& mapBody,
 void PreviewPanel::LoadGearJointVisitor::
 visit(d2d::ICloneable* object, bool& bFetchNext)
 {
-	Joint* data = static_cast<Joint*>(object);
+	libmodeling::Joint* data = static_cast<libmodeling::Joint*>(object);
 
 	ResolveToB2::createJoint(*data, m_world, m_mapBody, m_mapJoint);
 

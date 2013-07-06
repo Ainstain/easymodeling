@@ -22,21 +22,24 @@
 #include <drag2d.h>
 #include <Box2D/Box2D.h>
 
-namespace emodeling
+namespace libmodeling
 {
 	class Body;
 	class Joint;
+}
 
+namespace emodeling
+{
 	class ResolveToB2
 	{
 	public:
-		static b2Body* createBody(const Body& data, b2World* world,
-			std::map<Body*, b2Body*>& mapBody);
-		static b2Joint* createJoint(const Joint& data, b2World* world,
-			const std::map<Body*, b2Body*>& mapBody);
-		static b2Joint* createJoint(const Joint& data, b2World* world,
-			const std::map<Body*, b2Body*>& mapBody,
-			const std::map<Joint*, b2Joint*>& mapJoint); 
+		static b2Body* createBody(const libmodeling::Body& data, b2World* world,
+			std::map<libmodeling::Body*, b2Body*>& mapBody);
+		static b2Joint* createJoint(const libmodeling::Joint& data, b2World* world,
+			const std::map<libmodeling::Body*, b2Body*>& mapBody);
+		static b2Joint* createJoint(const libmodeling::Joint& data, b2World* world,
+			const std::map<libmodeling::Body*, b2Body*>& mapBody,
+			const std::map<libmodeling::Joint*, b2Joint*>& mapJoint); 
 
 	}; // ResolveToB2
 }

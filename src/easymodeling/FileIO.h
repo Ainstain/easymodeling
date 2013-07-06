@@ -21,14 +21,10 @@
 
 #include <drag2d.h>
 #include <json/json.h>
+#include <easymodeling.h>
 
 namespace emodeling
 {
-	class World;
-	class Body;
-	class Fixture;
-	class Joint;
-
 	class FileIO
 	{
 	public:
@@ -36,20 +32,11 @@ namespace emodeling
 		static void store(const char* filename);
 
 	private:
-		static Json::Value b2j(const World& world);
-		static Json::Value b2j(Body* body, const std::string& dlg);
-		static Json::Value b2j(Fixture* fixture);
-		static Json::Value b2j(Joint* joint, 
-			const std::map<Body*, int>& bodyIndexMap);
-
-		static void j2World(const Json::Value& worldValue);
-//		static Body* j2bBody(Json::Value bodyValue, StagePanel* stage);
-		static Body* j2bBody(const Json::Value& bodyValue, const std::string& dlg);
-		static Fixture* j2bFixture(const Json::Value& fixtureValue);
-		static Joint* j2bJoint(const Json::Value& jointValue, 
-			const std::vector<Body*>& bodies);
-
-		friend class FileApapter;
+		static Json::Value b2j(const libmodeling::World* world);
+		static Json::Value b2j(const libmodeling::Body* body, const std::string& dlg);
+		static Json::Value b2j(const libmodeling::Fixture* fixture);
+		static Json::Value b2j(libmodeling::Joint* joint, 
+			const std::map<libmodeling::Body*, int>& bodyIndexMap);
 
 	}; // FileIO
 }

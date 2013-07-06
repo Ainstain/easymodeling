@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\src\easymodeling;..\..\..\..\drag2d\src\common;..\..\..\..\drag2d\src\drag2d;..\..\..\..\drag2d\platform\msvc2008\include;..\..\..\..\easyshape\src;..\..\..\..\easybuilder\src"
+				AdditionalIncludeDirectories="..\..\..\src;..\..\..\src\easymodeling;..\..\..\..\drag2d\src\common;..\..\..\..\drag2d\src\drag2d;..\..\..\..\drag2d\platform\msvc2008\include;..\..\..\..\easyshape\src;..\..\..\..\easybuilder\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\src\easymodeling;..\..\..\..\drag2d\src\common;..\..\..\..\drag2d\src\drag2d;..\..\..\..\drag2d\platform\msvc2008\include;..\..\..\..\easyshape\src;..\..\..\..\easybuilder\src"
+				AdditionalIncludeDirectories="..\..\..\src;..\..\..\src\easymodeling;..\..\..\..\drag2d\src\common;..\..\..\..\drag2d\src\drag2d;..\..\..\..\drag2d\platform\msvc2008\include;..\..\..\..\easyshape\src;..\..\..\..\easybuilder\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -181,122 +181,6 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="dataset"
-			>
-			<File
-				RelativePath="..\..\..\src\easymodeling\Body.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\easymodeling\Body.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\easymodeling\Fixture.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\easymodeling\Fixture.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\easymodeling\World.h"
-				>
-			</File>
-			<Filter
-				Name="joint"
-				>
-				<File
-					RelativePath="..\..\..\src\easymodeling\DistanceJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\DistanceJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\FrictionJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\FrictionJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\GearJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\GearJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\Joint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\Joint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\MotorJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\MotorJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\PrismaticJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\PrismaticJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\PulleyJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\PulleyJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\RevoluteJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\RevoluteJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\RopeJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\RopeJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\WeldJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\WeldJoint.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\WheelJoint.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\WheelJoint.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
 		<Filter
 			Name="preview"
 			>
@@ -396,27 +280,11 @@
 				Name="fileio"
 				>
 				<File
-					RelativePath="..\..\..\src\easymodeling\FileAdapter.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\FileAdapter.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\src\easymodeling\FileIO.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\..\src\easymodeling\FileIO.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\PackageToBytes.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\easymodeling\PackageToBytes.h"
 					>
 				</File>
 				<File
@@ -609,10 +477,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ClassDiagram1.cd"
-			>
-		</File>
 		<File
 			RelativePath="..\..\..\..\easybuilder\platform\msvc2008\ebuilder.rc"
 			>

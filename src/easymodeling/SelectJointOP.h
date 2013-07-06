@@ -21,10 +21,11 @@
 
 #include "SelectBodyOP.h"
 
+namespace libmodeling { class Joint; }
+
 namespace emodeling
 {
 	class StagePanel;
-	class Joint;
 
 	class SelectJointOP : public SelectBodyOP
 	{
@@ -54,13 +55,13 @@ namespace emodeling
 		}; // DrawSelectedVisitor
 
 	private:
-		Joint* m_selected;
-		Joint* m_mouseOn;
+		libmodeling::Joint* m_selected;
+		libmodeling::Joint* m_mouseOn;
 
 		d2d::Vector m_firstPos;
 
 	public:
-		d2d::SelectionSet<Joint> jointSelection;
+		d2d::SelectionSet<libmodeling::Joint> jointSelection;
 
 //		std::vector<Joint*> selectedJoints;
 

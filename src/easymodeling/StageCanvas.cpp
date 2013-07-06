@@ -19,7 +19,6 @@
 #include "StageCanvas.h"
 #include "StagePanel.h"
 #include "DrawUtils.h"
-#include "Joint.h"
 
 using namespace emodeling;
 
@@ -55,7 +54,7 @@ void StageCanvas::drawSprites()
 	for (size_t i = 0, n = sprites.size(); i < n; ++i)
 	{
 		d2d::SpriteDraw::drawSprite(sprites[i]);
-		DrawUtils::drawBody(static_cast<Body*>(sprites[i]->getUserData()), DrawUtils::e_default);
+		DrawUtils::drawBody(static_cast<libmodeling::Body*>(sprites[i]->getUserData()), DrawUtils::e_default);
 	}
 }
 
@@ -111,7 +110,7 @@ void StageCanvas::drawLines() const
 
 void StageCanvas::DrawJointVisitor::visit(d2d::ICloneable* object, bool& bFetchNext)
 {
-	Joint* joint = static_cast<Joint*>(object);
-	joint->draw(Joint::e_default);
+	libmodeling::Joint* joint = static_cast<libmodeling::Joint*>(object);
+	joint->draw(libmodeling::Joint::e_default);
 	bFetchNext = true;
 }

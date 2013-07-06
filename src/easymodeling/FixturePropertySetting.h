@@ -21,14 +21,14 @@
 
 #include <drag2d.h>
 
+namespace libmodeling { class Fixture; }
+
 namespace emodeling
 {
-	class Fixture;
-
 	class FixturePropertySetting : public d2d::IPropertySetting
 	{
 	public:
-		FixturePropertySetting(d2d::EditPanel* editPanel, Fixture* fixture);
+		FixturePropertySetting(d2d::EditPanel* editPanel, libmodeling::Fixture* fixture);
 
 		virtual void updatePanel(d2d::PropertySettingPanel* panel);
 
@@ -37,7 +37,7 @@ namespace emodeling
 		virtual void enablePropertyGrid(d2d::PropertySettingPanel* panel, bool bEnable);
 
 	private:
-		Fixture* m_fixture;
+		libmodeling::Fixture* m_fixture;
 
 	}; // FixturePropertySetting
 }

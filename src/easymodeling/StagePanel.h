@@ -21,11 +21,14 @@
 
 #include <drag2d.h>
 
-namespace emodeling
+namespace libmodeling
 {
 	class Body;
 	class Joint;
+}
 
+namespace emodeling
+{
 	class StagePanel : public d2d::EditPanel, public d2d::SpritesPanelImpl
 	{
 	public:
@@ -47,20 +50,20 @@ namespace emodeling
 		virtual d2d::ISprite* querySpriteByPos(const d2d::Vector& pos) const;
 		virtual void querySpritesByRect(const d2d::Rect& rect, std::vector<d2d::ISprite*>& result) const;		
 
-		Joint* queryJointByPos(const d2d::Vector& pos) const;
-		void queryJointsByRect(const d2d::Rect& rect, std::vector<Joint*>& result) const;
+		libmodeling::Joint* queryJointByPos(const d2d::Vector& pos) const;
+		void queryJointsByRect(const d2d::Rect& rect, std::vector<libmodeling::Joint*>& result) const;
 
-		void insertJoint(Joint* joint) {
+		void insertJoint(libmodeling::Joint* joint) {
 			m_joints.push_back(joint);
 		}
-		void removeJoint(Joint* joint);
+		void removeJoint(libmodeling::Joint* joint);
 
 		void traverseBodies(d2d::IVisitor& visitor) const;
 		void traverseJoints(d2d::IVisitor& visitor) const;
 
 	private:
-		static void loadBody(const wxString& filepath, Body& body);
-		static void loadBody(d2d::ISprite* sprite, Body& body);
+		static void loadBody(const wxString& filepath, libmodeling::Body& body);
+		static void loadBody(d2d::ISprite* sprite, libmodeling::Body& body);
 
 	private:
 		class PointQueryVisitor : public d2d::IVisitor
@@ -88,8 +91,8 @@ namespace emodeling
 		}; // RectQueryVisitor
 
 	private:
-		std::vector<Body*> m_bodies;
-		std::vector<Joint*> m_joints;
+		std::vector<libmodeling::Body*> m_bodies;
+		std::vector<libmodeling::Joint*> m_joints;
 
 	}; // StagePanel
 }
