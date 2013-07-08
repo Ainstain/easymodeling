@@ -21,6 +21,8 @@
 
 #include "StagePanel.h"
 
+#include <easyshape.h>
+
 using namespace emodeling;
 
 void FileIO::load(const char* filename)
@@ -194,7 +196,7 @@ Json::Value FileIO::b2j(const libmodeling::Fixture* fixture)
 	value["categoryBits"] = fixture->categoryBits;
 	value["maskBits"] = fixture->maskBits;
 	value["groupIndex"] = fixture->groupIndex;
-	value["shape"] = d2d::EShapeFileAdapter::store(fixture->shape);
+	value["shape"] = libshape::FileAdapter::store(fixture->shape);
 
 	return value;
 }
